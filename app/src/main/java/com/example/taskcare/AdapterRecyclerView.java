@@ -1,6 +1,6 @@
 package com.example.taskcare;
 
-import android.content.Context;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,46 +9,47 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerView.ViewHolder> {
+import java.util.ArrayList;
 
-    private String[] SubjectValues;
-    private Context context;
+public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerView.MyViewHolder> {
+    private ArrayList<Task> listTask;
 
-    AdapterRecyclerView(Context context1, String[] SubjectValues1) {
-
-        SubjectValues = SubjectValues1;
-        context = context1;
-    }
-
-    static class ViewHolder extends RecyclerView.ViewHolder {
-
-        TextView textView;
-
-        ViewHolder(View v) {
-
-            super(v);
-
-            textView = v.findViewById(R.id.textItem);
-        }
+    public AdapterRecyclerView(ArrayList<Task> listTask) {
+        this.listTask = listTask;
     }
 
     @NonNull
     @Override
-    public AdapterRecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        View view = LayoutInflater.from(context).inflate(R.layout.list_tasks, parent, false);
-
-        return new ViewHolder(view);
+    public AdapterRecyclerView.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.list_tasks,parent,false);
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-
-        holder.textView.setText(SubjectValues[position]);
+    public void onBindViewHolder(@NonNull AdapterRecyclerView.MyViewHolder holder, int position) {
+        holder.tvTugas.setText(listTask.get(position).getTugas());
+        holder.tvDeskripsi.setText(listTask.get(position).getDeskripsi());
+        holder.tvTanggal.setText(listTask.get(position).getTanggal());
+        holder.tvWaktu.setText(listTask.get(position).getWaktu());
     }
 
     @Override
     public int getItemCount() {
-
-        return SubjectValues.length;
+        return (listTask!=null) ? listTask.size():0;
     }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        private TextView tvTugas, tvDeskripsi, tvTanggal, tvWaktu;
+
+        public MyViewHolder(@NonNull View view) {
+            super(view);
+
+            tvTugas = view.findViewById(R.id.tv_Tugas);
+            tvDeskripsi = view.findViewById(R.id.tv_Deskripsi);
+            tvTanggal = view.findViewById(R.id.tv_Tanggal);
+            tvWaktu = view.findViewById(R.id.tv_Waktu);
+        }
+    }
+
+}
